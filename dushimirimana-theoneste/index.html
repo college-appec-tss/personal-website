@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4fdf8;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+#header{
+    width:100%;
+    height:75px;
+    background:#1f2937;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 40px;
+    color:white;
+}
+
+#logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#logo img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+#links{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+#links a{
+    text-decoration:none;
+    color:white;
+    font-size:18px;
+    padding:8px 15px;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+#links a:hover{
+    background:#00b36b;
+}
+
+#links a.active{
+    background:#00ffbf;
+    color:#1f2937;
+    font-weight:bold;
+}
+
+/* BUTTON */
+#login_link{
+    padding:10px 20px;
+    border:none;
+    border-radius:5px;
+    background:#00b36b;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+#login_link:hover{
+    background:#008f55;
+}
+
+#selection{
+    padding:8px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* HOME */
+.home{
+    padding:50px;
+    text-align:center;
+}
+
+.home h1{
+    font-size:45px;
+    color:#1f2937;
+    margin-bottom:20px;
+}
+
+.home p{
+    font-size:22px;
+    color:#444;
+    line-height:1.8;
+    margin-bottom:40px;
+}
+
+/* INFO BOXES */
+.info-container{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.info-box{
+    width:300px;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.info-box:hover{
+    transform:translateY(-5px);
+}
+
+.info-box h2{
+    color:#00a86b;
+    margin-bottom:15px;
+}
+
+.info-box p{
+    font-size:16px;
+    color:#555;
+}
+
+/* POPUP */
+.popup{
+    width:350px;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    z-index:1000;
+    display:none;
+}
+
+.popup h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.popup input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.popup button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:5px;
+    background:#00b36b;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+.close-btn{
+    background:red !important;
+}
+
+/* OVERLAY */
+#overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    top:0;
+    left:0;
+    display:none;
+}
+
+/* FOOTER */
+footer{
+    background:#1f2937;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:auto;
+}
+
+footer span{
+    color:#00ffbf;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header id="header">
+
+    <div id="logo">
+        <img src="photos/logo.png" alt="logo">
+        <h2 id="title">My Portfolio</h2>
+    </div>
+
+    <div id="links">
+
+        <a href="index.html" id="homeText" class="active">Home</a>
+        <a href="about.html" id="aboutText">About</a>
+        <a href="contact.html" id="contactText">Contact</a>
+
+        <button id="login_link" onclick="openLogin()">Login</button>
+
+        <select id="selection" onchange="translatePage()">
+            <option value="en">English</option>
+            <option value="rw">Kinyarwanda</option>
+        </select>
+
+    </div>
+
+</header>
+
+<!-- HOME -->
+<section class="home">
+
+    <h1 id="welcomeText">Welcome to My Portfolio</h1>
+
+    <p id="mainParagraph">
+        I’m a passionate Software Development student at College APPEC Remera-Rukoma in Rwanda.
+        I enjoy building modern and user-friendly websites and applications.
+    </p>
+
+    <div class="info-container">
+
+        <div class="info-box">
+            <h2 id="skillTitle">My Skills</h2>
+            <p id="skillText">HTML, CSS, JavaScript, PHP, Database Management</p>
+        </div>
+
+        <div class="info-box">
+            <h2 id="projectTitle">Projects</h2>
+            <p id="projectText">Websites, school systems, business apps</p>
+        </div>
+
+        <div class="info-box">
+            <h2 id="goalTitle">My Goals</h2>
+            <p id="goalText">Become a professional software engineer</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- OVERLAY -->
+<div id="overlay"></div>
+
+<!-- LOGIN POPUP -->
+<div class="popup" id="login">
+
+    <h2 id="loginTitle">Login Form</h2>
+
+    <input type="text" placeholder="Enter your name">
+    <input type="password" placeholder="Enter password">
+
+    <button id="loginBtn" onclick="login()">Login</button>
+    <button class="close-btn" onclick="closeLogin()">Close</button>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+
+    <p id="footerText">
+        Developed with  by Theoneste
+    </p>
+
+    <p>
+        Current Time: <span id="time"></span>
+    </p>
+
+</footer>
+
+<script>
+
+function setLanguage(lang){
+    localStorage.setItem("lang", lang);
+}
+
+/* GET SAVED LANGUAGE */
+function getLanguage(){
+    return localStorage.getItem("lang") || "en";
+}
+
+/* LOGIN */
+function openLogin(){
+    document.getElementById("login").style.display="block";
+    document.getElementById("overlay").style.display="block";
+}
+
+function closeLogin(){
+    document.getElementById("login").style.display="none";
+    document.getElementById("overlay").style.display="none";
+}
+
+function login() {
+    window.location.href = "file:///C:/Users/COLLEGEAPPECREMERARU/Desktop/l3-swd-practical-assessment/dushimirimana-theoneste/login.html";
+}
+
+/* TIME */
+function updateTime(){
+    document.getElementById("time").innerHTML =
+    new Date().toLocaleString();
+}
+setInterval(updateTime,1000);
+updateTime();
+
+/* TRANSLATIONS */
+const translations = {
+    en: {
+        home:"Home",
+        about:"About",
+        contact:"Contact",
+        login:"Login",
+        welcome:"Welcome to My Portfolio",
+        intro:"I’m a passionate Software Development student at College APPEC Remera-Rukoma in Rwanda. I enjoy building modern and user-friendly websites and applications.",
+        skillsTitle:"My Skills",
+        skillsText:"HTML, CSS, JavaScript, PHP, Database Management",
+        projectTitle:"Projects",
+        projectText:"Websites, school systems, business apps",
+        goalTitle:"My Goals",
+        goalText:"Become a professional software engineer",
+        loginTitle:"Login Form",
+        loginBtn:"Login",
+        closeBtn:"Close",
+        namePlaceholder:"Enter your name",
+        passPlaceholder:"Enter password",
+        footer:"Developed with  by Theoneste"
+    },
+
+    rw: {
+        home:"Ahabanza",
+        about:"Ibyanjye",
+        contact:"Twandikire",
+        login:"Injira",
+        welcome:"Murakaza neza kuri Portfolio yanjye",
+        intro:"Ndi umunyeshuri wiga Software Development muri College APPEC Remera-Rukoma mu Rwanda. Nkunda gukora imbuga za internet n'ama application agezweho.",
+        skillsTitle:"Ubuhanga bwanjye",
+        skillsText:"HTML, CSS, JavaScript, PHP, Ubuyobozi bwa Database",
+        projectTitle:"Imishinga",
+        projectText:"Imbuga, sisitemu z'ishuri, apps z'ubucuruzi",
+        goalTitle:"Intego zanjye",
+        goalText:"Kuba injeniyeri wa software wabigize umwuga",
+        loginTitle:"Ifishi yo kwinjira",
+        loginBtn:"Injira",
+        closeBtn:"Funga",
+        namePlaceholder:"Andika izina ryawe",
+        passPlaceholder:"Andika ijambo ry'ibanga",
+        footer:"Byakozwe na  Theoneste"
+    }
+};
+
+/* APPLY TRANSLATION */
+function translatePage(){
+
+    const lang = document.getElementById("selection").value;
+    const t = translations[lang];
+
+    document.getElementById("homeText").innerText = t.home;
+    document.getElementById("aboutText").innerText = t.about;
+    document.getElementById("contactText").innerText = t.contact;
+    document.getElementById("login_link").innerText = t.login;
+
+    document.getElementById("welcomeText").innerText = t.welcome;
+    document.getElementById("mainParagraph").innerText = t.intro;
+
+    document.getElementById("skillTitle").innerText = t.skillsTitle;
+    document.getElementById("skillText").innerText = t.skillsText;
+
+    document.getElementById("projectTitle").innerText = t.projectTitle;
+    document.getElementById("projectText").innerText = t.projectText;
+
+    document.getElementById("goalTitle").innerText = t.goalTitle;
+    document.getElementById("goalText").innerText = t.goalText;
+
+    document.getElementById("loginTitle").innerText = t.loginTitle;
+    document.querySelector(".close-btn").innerText = t.closeBtn;
+
+    document.querySelectorAll(".popup input")[0].placeholder = t.namePlaceholder;
+    document.querySelectorAll(".popup input")[1].placeholder = t.passPlaceholder;
+
+    document.getElementById("footerText").innerText = t.footer;
+
+    /* SAVE LANGUAGE */
+    setLanguage(lang);
+}
+
+/* INIT ON PAGE LOAD */
+window.onload = function(){
+
+    const savedLang = getLanguage();
+
+    document.getElementById("selection").value = savedLang;
+    translatePage();
+
+};
+
+</script>
+</body>
+</html>

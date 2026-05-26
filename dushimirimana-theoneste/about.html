@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About Me</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#333;
+}
+
+/* HEADER */
+header{
+    width:100%;
+    background:#1f2937;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:white;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.menu{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:white;
+    font-size:18px;
+    padding:8px 15px;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    background:#00ffbf;
+    color:#1f2937;
+}
+
+.menu a.active{
+    background:#00ffbf;
+    color:#1f2937;
+    font-weight:bold;
+}
+
+select{
+    padding:8px;
+    border:none;
+    border-radius:5px;
+}
+
+/* ABOUT SECTION */
+.about-section{
+    width:90%;
+    margin:50px auto;
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.about-section h1{
+    text-align:center;
+    color:#1f2937;
+    margin-bottom:20px;
+    font-size:42px;
+}
+
+.about-section p{
+    text-align:center;
+    font-size:20px;
+    line-height:1.8;
+    margin-bottom:40px;
+}
+
+/* CARDS */
+.about-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+}
+
+.about-box{
+    width:300px;
+    background:#f9fafb;
+    border-radius:10px;
+    padding:30px;
+    text-align:center;
+    transition:0.3s;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.about-box:hover{
+    transform:translateY(-5px);
+    background:#d1fae5;
+}
+
+.about-box h2{
+    color:#00a86b;
+    margin-bottom:15px;
+}
+
+.about-box p{
+    font-size:18px;
+    color:#444;
+}
+
+/* FOOTER */
+footer{
+    margin-top:40px;
+    background:#1f2937;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+footer span{
+    color:#00ffbf;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo" id="logoText">My Portfolio</div>
+
+    <div class="menu">
+
+        <a href="index.html" id="homeText">Home</a>
+        <a href="about.html" id="aboutText">About</a>
+        <a href="contact.html" id="contactText">Contact</a>
+
+        <select id="language" onchange="setLanguage(this.value); translatePage();">
+            <option value="en">English</option>
+            <option value="rw">Kinyarwanda</option>
+        </select>
+
+    </div>
+
+</header>
+
+<section class="about-section">
+
+    <h1 id="titleText">About Me</h1>
+
+    <p id="paragraphText">
+        I am a passionate Software Development student who loves building modern web applications and solving real-world problems using technology.
+    </p>
+
+    <div class="about-container">
+
+        <div class="about-box">
+            <h2 id="skillsTitle">Skills</h2>
+            <p id="skillsText">HTML, CSS, JavaScript, PHP, MySQL</p>
+        </div>
+
+        <div class="about-box">
+            <h2 id="educationTitle">Education</h2>
+            <p id="educationText">College APPEC Remera-Rukoma - Software Development</p>
+        </div>
+
+        <div class="about-box">
+            <h2 id="interestTitle">Interests</h2>
+            <p id="interestText">Web Development, Mobile Apps, AI, Cyber Security</p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <p id="footerText">Developed with by Theoneste</p>
+    <p>Current Time: <span id="time"></span></p>
+
+</footer>
+
+<script>
+
+/* SAVE LANGUAGE */
+function setLanguage(lang){
+    localStorage.setItem("lang", lang);
+}
+
+/* TIME */
+function updateTime(){
+    document.getElementById("time").innerHTML =
+    new Date().toLocaleString();
+}
+setInterval(updateTime,1000);
+updateTime();
+
+/* TRANSLATIONS */
+const translations = {
+    en:{
+        home:"Home",
+        about:"About",
+        contact:"Contact",
+        title:"About Me",
+        paragraph:"I am a passionate Software Development student who loves building modern web applications and solving real-world problems using technology.",
+        skills:"Skills",
+        skillsText:"HTML, CSS, JavaScript, PHP, MySQL",
+        education:"Education",
+        educationText:"College APPEC Remera-Rukoma - Software Development",
+        interests:"Interests",
+        interestsText:"Web Development, Mobile Apps, AI, Cyber Security",
+        footer:"Developed with by Theoneste"
+    },
+
+    rw:{
+        home:"Ahabanza",
+        about:"Ibyanjye",
+        contact:"Twandikire",
+        title:"Ibyanjye",
+        paragraph:"Ndi umunyeshuri wiga Software Development ukunda gukora porogaramu zigezweho no gukemura ibibazo by'ikoranabuhanga.",
+        skills:"Ubuhanga",
+        skillsText:"HTML, CSS, JavaScript, PHP, MySQL",
+        education:"Aho Niga",
+        educationText:"College APPEC Remera-Rukoma - Software Development",
+        interests:"Ibinkundira",
+        interestsText:"Web Development, Mobile Apps, AI, Cyber Security",
+        footer:"Byakozwe na Theoneste"
+    }
+};
+
+/* TRANSLATE */
+function translatePage(){
+
+    const lang = localStorage.getItem("lang") ||
+                 document.getElementById("language").value;
+
+    document.getElementById("language").value = lang;
+
+    const t = translations[lang];
+
+    document.getElementById("homeText").innerText = t.home;
+    document.getElementById("aboutText").innerText = t.about;
+    document.getElementById("contactText").innerText = t.contact;
+
+    document.getElementById("titleText").innerText = t.title;
+    document.getElementById("paragraphText").innerText = t.paragraph;
+
+    document.getElementById("skillsTitle").innerText = t.skills;
+    document.getElementById("skillsText").innerText = t.skillsText;
+
+    document.getElementById("educationTitle").innerText = t.education;
+    document.getElementById("educationText").innerText = t.educationText;
+
+    document.getElementById("interestTitle").innerText = t.interests;
+    document.getElementById("interestText").innerText = t.interestsText;
+
+    document.getElementById("footerText").innerText = t.footer;
+}
+
+/* ACTIVE MENU */
+function setActivePage(){
+
+    const page = window.location.pathname.split("/").pop();
+
+    document.querySelectorAll(".menu a").forEach(a=>{
+        a.classList.remove("active");
+    });
+
+    if(page === "" || page === "index.html"){
+        document.getElementById("homeText").classList.add("active");
+    }
+    else if(page === "about.html"){
+        document.getElementById("aboutText").classList.add("active");
+    }
+    else if(page === "contact.html"){
+        document.getElementById("contactText").classList.add("active");
+    }
+}
+
+/* INIT */
+window.onload = function(){
+    setActivePage();
+    translatePage();
+};
+
+</script>
+
+</body>
+</html>

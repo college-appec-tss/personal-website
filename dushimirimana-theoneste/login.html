@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Team Table</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+}
+
+/* HEADER */
+header{
+    width:100%;
+    background:#1f2937;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:white;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.menu{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:white;
+    font-size:18px;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    color:#00ffbf;
+}
+
+select{
+    padding:8px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* TABLE SECTION */
+.table-section{
+    width:92%;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.table-section h1{
+    text-align:center;
+    margin-bottom:30px;
+    color:#1f2937;
+}
+
+/* FORM */
+.form-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.form-container input{
+    width:220px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    outline:none;
+}
+
+.form-container button{
+    padding:12px 25px;
+    border:none;
+    border-radius:6px;
+    background:#00b36b;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.form-container button:hover{
+    background:#008f55;
+}
+
+/* TABLE */
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    text-align:center;
+}
+
+thead{
+    background:#1f2937;
+    color:white;
+}
+
+th, td{
+    padding:15px;
+    border:1px solid #ddd;
+}
+
+tbody tr:nth-child(even){
+    background:#f3f4f6;
+}
+
+tbody tr:hover{
+    background:#d1fae5;
+}
+
+/* STATUS */
+.top-team{ color:green; font-weight:bold; }
+.middle-team{ color:orange; font-weight:bold; }
+.low-team{ color:red; font-weight:bold; }
+
+/* DELETE */
+.delete-btn{
+    background:red;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* FOOTER */
+footer{
+    margin-top:40px;
+    background:#1f2937;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+footer span{
+    color:#00ffbf;
+    font-weight:bold;
+}
+
+.error{
+    color:red;
+    font-size:13px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo" id="logoText">Team Records</div>
+
+    <div class="menu">
+
+        <a href="index.html" id="homeText">Home</a>
+        <a href="about.html" id="aboutText">About</a>
+        <a href="contact.html" id="contactText">Contact</a>
+
+        <select id="language" onchange="translatePage()">
+            <option value="en">English</option>
+            <option value="rw">Kinyarwanda</option>
+        </select>
+
+    </div>
+
+</header>
+
+<section class="table-section">
+
+    <h1 id="titleText">Dynamic Team Records Table</h1>
+
+    <div class="form-container">
+
+        <div>
+            <input type="text" id="teamName" placeholder="Enter Team Name">
+            <div class="error" id="nameError"></div>
+        </div>
+
+        <input type="number" id="teamScore" placeholder="Enter Team Score">
+        <input type="number" id="teamPosition" placeholder="Enter Position">
+        <input type="text" id="teamCoach" placeholder="Enter Coach Name">
+
+        <button onclick="addTeam()" id="addButton">Add Team</button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th id="th1">Team Name</th>
+                    <th id="th2">Score</th>
+                    <th id="th3">Position</th>
+                    <th id="th4">Coach</th>
+                    <th id="th5">Status</th>
+                    <th id="th6">Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <p id="footerText">Developed with by Theoneste</p>
+    <p>Current Time: <span id="time"></span></p>
+
+</footer>
+
+<script>
+
+function setLanguage(lang){
+    localStorage.setItem("lang", lang);
+}
+
+function getLanguage(){
+    return localStorage.getItem("lang") || "en";
+}
+
+/* TIME */
+setInterval(()=>{
+    document.getElementById("time").innerHTML = new Date().toLocaleString();
+},1000);
+
+/* COUNTER */
+let count = 0;
+
+/* VALIDATION */
+function isValidName(name){
+    return /^[A-Za-z\s]+$/.test(name);
+}
+
+function isValidCoach(coach){
+    return /^[A-Za-z\s]+$/.test(coach);
+}
+
+/* TRANSLATION */
+const translations = {
+    en:{
+        home:"Home",
+        about:"About",
+        contact:"Contact",
+        title:"Dynamic Team Records Table",
+        add:"Add Team",
+        del:"Delete",
+        namePH:"Enter Team Name",
+        scorePH:"Enter Team Score",
+        posPH:"Enter Position",
+        coachPH:"Enter Coach Name",
+        th1:"Team Name",
+        th2:"Score",
+        th3:"Position",
+        th4:"Coach",
+        th5:"Status",
+        th6:"Action",
+        top:"Top Team",
+        mid:"Average Team",
+        low:"Low Team",
+        footer:"Developed with by Theoneste",
+        nameError:"Name must contain letters only",
+        coachError:"Coach must contain letters only"
+    },
+    rw:{
+        home:"Ahabanza",
+        about:"Ibyanjye",
+        contact:"Twandikire",
+        title:"Imbonerahamwe y'Amakipe",
+        add:"Ongeramo Ikipe",
+        del:"Siba",
+        namePH:"Andika Izina ry'Ikipe",
+        scorePH:"Andika Amanota",
+        posPH:"Andika Umwanya",
+        coachPH:"Andika Umutoza",
+        th1:"Izina ry'Ikipe",
+        th2:"Amanota",
+        th3:"Umwanya",
+        th4:"Umutoza",
+        th5:"Icyiciro",
+        th6:"Igikorwa",
+        top:"Ikipe Nziza",
+        mid:"Ikipe Ntisanzwe",
+        low:"Ikipe Nkeya",
+        footer:"Byakozwe na Theoneste",
+        nameError:"Izina rigomba kuba inyuguti gusa",
+        coachError:"Umutoza agomba kuba inyuguti gusa"
+    }
+};
+
+/* ADD TEAM */
+function addTeam(){
+
+    const lang = getLanguage();
+    const t = translations[lang];
+
+    const name = document.getElementById("teamName").value;
+    const score = document.getElementById("teamScore").value;
+    const pos = document.getElementById("teamPosition").value;
+    const coach = document.getElementById("teamCoach").value;
+
+    /* VALIDATION */
+    if(!isValidName(name)){
+        document.getElementById("nameError").innerText = t.nameError;
+        return;
+    } else {
+        document.getElementById("nameError").innerText = "";
+    }
+
+    if(!isValidCoach(coach)){
+        alert(t.coachError);
+        return;
+    }
+
+    if(name===""||score===""||pos===""||coach===""){
+        alert("Fill all fields");
+        return;
+    }
+
+    count++;
+
+    let status = "";
+    let cls = "";
+
+    if(pos<=3){ status=t.top; cls="top-team"; }
+    else if(pos<=6){ status=t.mid; cls="middle-team"; }
+    else{ status=t.low; cls="low-team"; }
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${count}</td>
+        <td>${name}</td>
+        <td>${score}</td>
+        <td>${pos}</td>
+        <td>${coach}</td>
+        <td class="${cls}" data-status="${cls}">${status}</td>
+        <td><button class="delete-btn" onclick="deleteRow(this)">${t.del}</button></td>
+    `;
+
+    document.getElementById("tableBody").appendChild(row);
+
+    document.getElementById("teamName").value="";
+    document.getElementById("teamScore").value="";
+    document.getElementById("teamPosition").value="";
+    document.getElementById("teamCoach").value="";
+}
+
+/* DELETE */
+function deleteRow(btn){
+    btn.parentElement.parentElement.remove();
+}
+
+/* UPDATE TABLE ON LANGUAGE CHANGE */
+function updateRows(t){
+
+    document.querySelectorAll("#tableBody tr").forEach(row=>{
+
+        const statusCell = row.children[5];
+        const btn = row.querySelector("button");
+
+        if(btn) btn.innerText = t.del;
+
+        if(statusCell){
+
+            const type = statusCell.getAttribute("data-status");
+
+            if(type === "top-team") statusCell.innerText = t.top;
+            else if(type === "middle-team") statusCell.innerText = t.mid;
+            else statusCell.innerText = t.low;
+        }
+    });
+}
+
+/* TRANSLATE */
+function translatePage(){
+
+    const lang = document.getElementById("language").value;
+    localStorage.setItem("lang", lang);
+
+    const t = translations[lang];
+
+    document.getElementById("homeText").innerText=t.home;
+    document.getElementById("aboutText").innerText=t.about;
+    document.getElementById("contactText").innerText=t.contact;
+
+    document.getElementById("titleText").innerText=t.title;
+
+    document.getElementById("teamName").placeholder=t.namePH;
+    document.getElementById("teamScore").placeholder=t.scorePH;
+    document.getElementById("teamPosition").placeholder=t.posPH;
+    document.getElementById("teamCoach").placeholder=t.coachPH;
+
+    document.getElementById("addButton").innerText=t.add;
+
+    document.getElementById("th1").innerText=t.th1;
+    document.getElementById("th2").innerText=t.th2;
+    document.getElementById("th3").innerText=t.th3;
+    document.getElementById("th4").innerText=t.th4;
+    document.getElementById("th5").innerText=t.th5;
+    document.getElementById("th6").innerText=t.th6;
+
+    document.getElementById("footerText").innerText=t.footer;
+
+    updateRows(t);
+}
+
+/* AUTO LOAD LANGUAGE */
+window.onload = function(){
+    const lang = getLanguage();
+    document.getElementById("language").value = lang;
+    translatePage();
+};
+
+</script>
+
+</body>
+</html>
